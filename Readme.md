@@ -1,5 +1,8 @@
 A Repo containing my solved DSA questions across all platforms
 
+My LinkedIn profile:
+https://www.linkedin.com/in/suyog-k-157a3924b/
+
 My leetcode profile:
 https://leetcode.com/u/suyog_k/
 
