@@ -1,3 +1,4 @@
+# solution by @suyogk23 GITHUB
 class Solution:
     def gcdOfOddEvenSums(self, n: int) -> int:
         if n == 1:
