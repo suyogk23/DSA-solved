@@ -7,7 +7,9 @@ class Solution:
                 if sum(nums) == n and len(nums) == k:
                     ans.append(nums)
             else:
+		# not take
                 dfs(i+1, nums.copy())
+		# take
                 nums.append(i)
                 dfs(i+1, nums.copy())
         ans = []

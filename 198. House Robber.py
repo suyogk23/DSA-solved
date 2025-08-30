@@ -1,18 +1,22 @@
 class Solution:
-    '''
-    make recursive calls for index i+2 and i+3 and
-    maximise sum form left or right subree of recusrsive calls
-    return max from index 0 and 1
-    '''
+    # take or not take problem, if take, call (i+2) + cur_house_money, else call (i+1)
+    # use dp to speed up
+    # solution by @suyogk23 GITHUB
     def rob(self, nums: List[int]) -> int:
-        n=len(nums)
-        dp = [-1 for i in range(n)]
-        def fun(i):
+        n = len(nums)
+        dp = defaultdict(int)
+
+        def dfs(i):
+            # base case 
             if i >= n:
                 return 0
-            if dp[i] == -1:
-                dp[i] = nums[i]+max(fun(i+2), fun(i+3))
+            if i in dp:
+                return dp[i]
+            # not take money from current house
+            not_take = dfs(i+1)
+            # take money from current house
+            take = nums[i] + dfs(i+2)
+            dp[i] = max(take, not_take)
             return dp[i]
-
-        ans = max(fun(0), fun(1))
-        return ans
+        
+        return dfs(0)
