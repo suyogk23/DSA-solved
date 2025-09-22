@@ -1,40 +1,45 @@
-'''
-Use recursion
-- for each substring inside bracket repeat same problem (subproblems)
-for char in string:
-    if char is digit:
-        ans += k * string inside square brackets []
-    else:
-        until digit is found iterate
-        ans += char until digit
-return ans
-'''
 class Solution:
+    # solution by @suyogk23 @GITHUB
+    # use a stack
+    # append to stack unless you encounter ']' (closing bracket)
+    # when you encounter ']' (closing bracket)
+    # pop substring until you encounter '[' opening bracket
+    # now get the corresponding k (number), multiply it with the substring obtained
+    # now push the resultant substring (num * sbstr) to stack
+    # finally concatenate all the stes in stack and return the resultant string
     def decodeString(self, s: str) -> str:
-        i, n = 0, len(s)
-        ans = ""
-        while i < n:
-            if s[i].isdigit():
-                start = i
-                while i < n and s[i+1].isdigit():
-                    i+=1
-                # print(s[start:i+1])
-                k = int(s[start:i+1])
-                closed = 1
-                j = i+2
-                while j < n and closed > 0:
-                    if s[j] == ']':
-                        closed -= 1
-                    elif s[j] == '[':
-                        closed += 1
-                    j+=1
-                ans += k*self.decodeString(s[i+2:j-1])
-                i = j
+        stk = []
+        
+        for c in s:
+            if c == ']':
+                # get the substr inside the bracket
+                substr = ''
+                while stk[-1] != '[':
+                    substr = stk.pop() + substr # make sure you add char to substr in reverse order
+                #pop off the opening bracket
+                stk.pop()
+                # get the number
+                num = ''
+                while stk and stk[-1].isdigit():
+                    num += stk.pop()
+                num = int(num[::-1]) # reverse the num
+                stk.append(num * substr) 
             else:
-                j = i
-                while j < n and not s[j].isdigit():
-                    j+=1
-                ans += s[i:j]
-                i = j
+                stk.append(c)
+        ans = ""
+        # concatenate all strings in the stack and return it
+        for substr in stk:
+            ans += substr
         return ans
-            
+
+
+
+
+
+
+
+
+
+
+
+
