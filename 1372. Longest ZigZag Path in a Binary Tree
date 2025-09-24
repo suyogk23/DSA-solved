@@ -24,3 +24,4 @@ class Solution:
             return max(max_val, getMax(node.left), getMax(node.right))
         
         return getMax(root)-1
+
