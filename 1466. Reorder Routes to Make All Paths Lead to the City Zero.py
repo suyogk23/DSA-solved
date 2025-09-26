@@ -1,23 +1,32 @@
 class Solution:
-    # solution by @suyogk23 GITHUB
-    # this solution only works for acyclic graphs (trees)
-    # maintain an undir duplicate edge with sign 0 and original directed edge with sign 1
-    # traverse the tree in dfs, only go to neighbour if the neighbour is != parent (remember the graph is acyclic thats why this works)
-    # maintain a global ans var and add sign to it (+1 if original edge else 0), this automatically tracks the edges to flip
+    # soultion by @suyogk23 GITHUB
+    # maintain 2 adj_list one for dir original edges and other for undirected edges
+    # traverse using undirected edges, if neighbour in original adj list and neighbour is not alreay visisted
+    # add +1 to ans
+    # else continue traversal to unvisited nodes on the undirected graph
+    # this solution works on cyclic graph also
     def minReorder(self, n: int, connections: List[List[int]]) -> int:
-        adj_list = defaultdict(list)
-        for u, v in connections:
-            adj_list[u].append([v, 1]) # sign = 1, for original directed edge
-            adj_list[v].append([u, 0]) # sign = 0, for undirected edge
-
-        ans = 0
-        def dfs(parent, node):
-            nonlocal ans
-            for neighbour, sign in adj_list[node]:
-                if neighbour != parent:
-                    ans += sign
-                    dfs(node, neighbour)
+        dir_adj_list = defaultdict(list)
+        undir_adj_list = defaultdict(list)
+        for v, u in connections:
+            dir_adj_list[v].append(u)
+            undir_adj_list[v].append(u)
+            undir_adj_list[u].append(v)
         
-        dfs(-1, 0)
+        vis = set()
+        ans = 0
+        def dfs(node):
+            nonlocal ans
+            vis.add(node)
+            for neighbour in undir_adj_list[node]:
+                if neighbour in dir_adj_list[node] and neighbour not in vis:
+                    ans += 1
+                if neighbour not in vis:
+                    dfs(neighbour)
+
+        dfs(0)
         return ans
+
+            
+        
         
