@@ -4,21 +4,46 @@
 #         self.val = val
 #         self.next = next
 
-# O(n) time and space
-# append to list and find max sum (maintain l and r pointer at both ends)
+# O(1) solution
+# find len of linked list
+# traverse 1 more than first half of linked list
+# reverse the linked list from this node
+# now you have head and tail of linked list
+# traverse n/2 times and update max twin sum each iteration accordingly
+
 class Solution:
     def pairSum(self, head: Optional[ListNode]) -> int:
+        # get size of linked list
         node = head
-        l = []
+        n = 0
         while(node):
-            l.append(node.val)
             node = node.next
-        n = len(l)
-        i, j = 0, n-1
-        ans = 0
-        while(i < j):
-            ans = max(ans, (l[i] + l[j]))
+            n += 1
+        # traverse until half + 1 element of linked list
+        node = head
+        i = 0
+        while(i < ((n/2))):
+            node = node.next
             i += 1
-            j -= 1
-        
-        return ans
+        # reverse the second half of linked list
+        prev = node
+        node = node.next
+        while(node):
+            next_node = node.next
+            node.next = prev
+            prev = node
+            node = next_node
+        trail = prev
+        # traverse for n/2 times and update the max_twin_sum accordingly
+        l, r = head, prev
+        i = 0
+        maxTsum = 0
+        while(i < n/2):
+            maxTsum = max(maxTsum, l.val + r.val)
+            l = l.next
+            r = r.next
+            i += 1
+        return maxTsum
+
+
+
