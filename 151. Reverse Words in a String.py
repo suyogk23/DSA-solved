@@ -1,10 +1,25 @@
 class Solution:
     # solution by @suyogk23 GITHUB
-    # pythonic solution
-    # split the str according to whitespace and make it to an array or words
-    # reverse the array of words
-    # join the words in array on " " (space), then strip() the string (removes leading and trailing spaces)
+    # tradtitional string processing
+    # use a while loop and store words in array and ignore spaces
+    # now append the words in the array in reverse order
+    # return the string
     def reverseWords(self, s: str) -> str:
-        words = s.split()
-        words.reverse()
-        return " ".join(words).strip()
+        i, n = 0, len(s)
+        words = []
+        while i < n:
+            word = ''
+            while i < n and s[i] != ' ':
+                word = word + s[i]
+                i+=1
+            if word:
+                words.append(word)
+            i+=1
+        ans = ''
+        for word in words:
+            ans = word + " " + ans
+        
+        ans = ans[:-1]
+        return ans
+
+            
