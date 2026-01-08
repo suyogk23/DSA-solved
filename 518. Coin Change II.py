@@ -4,7 +4,7 @@ class Solution:
         dp = [0]*(amount+1)
         dp[0] = 1
         for coin in coins:
-            for i in range(1,amount+1):
+            for i in range(coin,amount+1):
                 if coin <= i:
                     dp[i] += dp[i-coin]
     
