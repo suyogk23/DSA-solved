@@ -6,30 +6,19 @@
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
         n = len(lists)
-        if n == 0:
-            return None
+        pq = []
+        for i, head in enumerate(lists):
+            if head:
+                heapq.heappush(pq, [head.val, i, head])
 
-        def mergeSortedLL(n1, n2):
-            cur = dummy = ListNode()
-            while n1 and n2:
-                if n1.val <= n2.val:
-                    cur.next = n1
-                    cur = cur.next
-                    n1 = n1.next
-                else:
-                    cur.next = n2
-                    cur = cur.next
-                    n2 = n2.next
-            if n1:
-                cur.next = n1
-            else:
-                cur.next = n2
-            return dummy.next
+        cur = dummy = ListNode()
+        while pq:
+            ele = heapq.heappop(pq)
+            cur.next = ele[2]
+            ele[2] = ele[2].next
+            cur = cur.next
+            if ele[2]:
+                ele[0] = ele[2].val
+                heapq.heappush(pq, ele)
 
-        cur = lists[0]
-        for i in range(1, n):
-            cur = mergeSortedLL(cur, lists[i])
-
-        return cur
-
-         
+        return dummy.next
