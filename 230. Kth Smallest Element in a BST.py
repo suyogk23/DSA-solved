@@ -8,14 +8,14 @@ class Solution:
     def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
         # in order traversal
         arr = []
-        def preorder(node):
+        def inorder(node):
             nonlocal arr
             if not node:
                 return
-            preorder(node.left)
+            inorder(node.left)
             # print(node.val)
             arr.append(node.val)
-            preorder(node.right)
-        preorder(root)
+            inorder(node.right)
+        inorder(root)
         # print(arr)
         return arr[k-1]
