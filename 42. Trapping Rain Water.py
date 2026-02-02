@@ -1,29 +1,30 @@
 class Solution:
-    # 2 ptr optimal:
-    # so we have l = start, r = end
-    # we move whicever one is smaller becuase imagine left =3 and right = 4 
-    # so whatever is in between can have max 3 u of water - height in current cell, 
-    # so basically this is why we shift whichever height is lower(i.e, l or r)
+    # this is a Two Pointer problem
+    # track max left height and right height so far, 
+    # move ptr that has lesser height
+    # update max left or right height (do this before calculating area)
+    # calcualte cur vol, max height - cur height, add cur vol to toal vol
     def trap(self, height: List[int]) -> int:
         n = len(height)
-        if (n<=2):
+        if n <= 2:
             return 0
+        
+        l = 0
+        r = n-1
+        max_left_height = height[l]
+        max_right_height = height[r]
+        total_vol = 0
 
-        maxL = height[0]
-        maxR = height[n-1]
-        l, r = 0, n-1
-        vol = 0
-        while (l < r):
-            if maxL < maxR:
+        while l < r:
+            if height[l] < height[r]:
                 l += 1
-                maxL = max(maxL, height[l])
-                vol += maxL - height[l]
+                max_left_height = max(max_left_height, height[l])
+                cur_vol = max_left_height - height[l]
+                total_vol += cur_vol
             else:
-                r -= 1 
-                maxR = max(maxR, height[r])
-                vol += maxR - height[r]
-
-        return vol
-
-
-
+                r -= 1
+                max_right_height = max(max_right_height, height[r])
+                cur_vol = max_right_height - height[r]
+                total_vol += cur_vol
+        
+        return total_vol
