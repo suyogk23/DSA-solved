@@ -1,0 +1,21 @@
+class Solution:
+    def numberOfWays(self, s: str) -> int:
+        # bottom up 
+        # TC: O(n), space: constant
+        n = len(s)
+        # 001101
+        # keep track of prev possible states before arriving at 101 and 010
+        # '101': 10, 1, '010': '01', '0'
+        dp = {'101': 0, '010':0, '10':0, '01':0, '1':0, '0':0}
+        # prefix strings
+        for i in range(n):
+            if s[i] == '0':
+                dp['0'] += 1
+                dp['10'] += dp['1']
+                dp['010'] += dp['01']
+            elif s[i] == '1':
+                dp['1'] += 1
+                dp['01'] += dp['0']
+                dp['101'] += dp['10']
+
+        return dp['101'] + dp['010']
