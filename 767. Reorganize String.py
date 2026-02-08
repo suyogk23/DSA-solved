@@ -3,7 +3,7 @@ class Solution:
     def reorganizeString(self, s: str) -> str:
         # maintain max heap with (count, char), keep adding the top 2 most freq chars to ans
         # push the char with updated count to heap again
-        # TC: O(n)
+        # TC: O(n log k), n = len(s), k is size of heap
         # Space: O(n)
         n = len(s)
         hm = defaultdict(int)
@@ -12,9 +12,7 @@ class Solution:
             hm[c] += 1
         # check if rearrangement is possible:
         max_count = max(list(hm.values()))
-        # print(count, (n-count))
         if max_count > ceil(n/2): # count(cur_ele) - count(remaining_ele)
-            print(max_count)
             return ""
 
         pq = []
