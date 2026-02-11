@@ -28,7 +28,7 @@ class Solution:
                 if major_count < minor_count and rem_minor > 0:
                     # reset, discard previous subarray
                     major_count = minor_count = 0
-                    cur_max = 0
+   
             return global_max
 
         # find max variance between all unique characters in s, with each character assigned as major and minor and the opposite
