@@ -1,29 +1,27 @@
 class Solution:
     def appealSum(self, s: str) -> int:
-        s = _+s # to get 1 indexed string
-        hm = defaultdict(int)
-        ans = 0
+        # Time: O(n)
+        # Space: O(n)
 
+        # subproblem: @ s[i], the total appeal is:
+        # if s[i] is never seen before: appeal(s[i-1]) + (i+1) [total appeal increases by +1 for all prev substrs]
+        # else: appeal(s[i-1]) + (i - rev_idx_s[i]) [total appeal increases by +1 only for substrs where s[i] has not occured before]
+        # the above 2 cases also handles the individual appeals for substr with length 1
+        # accumulate prev accross all idx, as the prev will contain appeal for all substr only unitl idx i
+        # why?: by combinatorics: the increment in appeal is defined as above (theory)
+
+        prev_seen_idx = {}
+        prev_appeal = 0
+        total_appeal = 0
         for i, c in enumerate(s):
-            if i > 0:
-                hm[c] = i
-                ans += sum(hm.values())
+            if c in prev_seen_idx:
+                # seen previously
+                prev_appeal = prev_appeal + (i - prev_seen_idx[c])
+            else:
+                prev_appeal = prev_appeal + (i + 1)
+            prev_seen_idx[c] = i
+            total_appeal += prev_appeal
 
-        return ans
-        # in 1 indexed array, the num of prev substr ending with current char == idx
-        # sum(hm.values()):
-        # (after processing 'a', 'b', 'b')
-        # hm = {a:1, b:3}
-        # Substrings ending at position 2:
-        # b [2,2]: contains 'b' → appeal = 1
-        # bb [1,2]: contains 'b' → appeal = 1
-        # abb [0,2]: contains 'a' and 'b' → appeal = 2
-        # total appeal = 4
-        # also until we reached ('a', 'b', 'b'), we already calculated appeal for subarray from right to left
-        # ('a', 'b')
-        # b = 1
-        # ab = 2
-        # ('a')
-        # a = 1
-        # hence if we total all these we get 8
+        return total_appeal
+
         
