@@ -1,29 +1,34 @@
+from math import ceil
 class Solution:
-    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
-        # time: O(log (m) + log (n)) = O(log(m*n))
-        n = len(matrix) # rows
-        m = len(matrix[0]) # cols
+    def minEatingSpeed(self, piles: List[int], h: int) -> int:
+        # time: O(n * log (max))
+        n = len(piles)
+        if h < n: # its not possible to eat bananas faster than n (array size rate)
+            return -1
 
-        def searchRow(row, l, r): #O(log m)
-            while l <= r:
-                mid = (l+r)//2
-                if matrix[row][mid] == target:
-                    return True
-                if matrix[row][mid] < target:
-                    l = mid+1
-                else:
-                    r = mid-1
-            return False # element not found
-
-        lr, rr = 0, n-1
-        while lr <= rr: # O(log n)
-            mr = (lr + rr)//2
-            if matrix[mr][0] <= target and target <= matrix[mr][m-1]:
-                # print(mr)
-                return searchRow(mr, 0, m-1)
-            if matrix[mr][0] > target:
-                rr = mr-1
-            else:
-                lr = mr+1
+        def getEatTime(rate):
+            time = 0
+            for pile in piles:
+                time += ceil(pile/rate)
+            return time
         
-        return False
+        l = 1
+        r = max(piles)
+
+        while l < r:
+            m = (l+r)//2
+            time = getEatTime(m)
+            # print(l, r, m, time)
+            if time > h:
+                # increase rate of eating
+                l = m + 1
+            else:
+                # if time < h, we have to find min rate
+                r = m
+
+        return r
+
+
+        # piles: [3, 5, 2, 1, 10]
+        # h: 4
+        # k: varies each hour
