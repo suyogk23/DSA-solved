@@ -1,23 +1,29 @@
-# solution by @suyogk23 GITHUB
-# do binary search of range(1, max element in piles)
-# when cant finish at m rate l=m+1 else, r=m
-# this will effectively fing min req k when l == r
-#can finish function can be made y finging if sum of ceil(current pile/ current k) >= h,
-#finds rate of eating is fast enough to finish the pile
 class Solution:
-    def minEatingSpeed(self, piles: List[int], h: int) -> int:
-        n = len(piles)
-        piles = sorted(piles)
-        l, r = 1, piles[n-1]
-        def canFinish(k):
-            hrs = sum(math.ceil(pile/k) for pile in piles)
-            return hrs <= h
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        # time: O(log (m) + log (n)) = O(log(m*n))
+        n = len(matrix) # rows
+        m = len(matrix[0]) # cols
 
-        while l < r:
-            m = (l+r) // 2
-            if canFinish(m):
-                r = m
+        def searchRow(row, l, r): #O(log m)
+            while l <= r:
+                mid = (l+r)//2
+                if matrix[row][mid] == target:
+                    return True
+                if matrix[row][mid] < target:
+                    l = mid+1
+                else:
+                    r = mid-1
+            return False # element not found
+
+        lr, rr = 0, n-1
+        while lr <= rr: # O(log n)
+            mr = (lr + rr)//2
+            if matrix[mr][0] <= target and target <= matrix[mr][m-1]:
+                # print(mr)
+                return searchRow(mr, 0, m-1)
+            if matrix[mr][0] > target:
+                rr = mr-1
             else:
-                l = m+1
+                lr = mr+1
         
-        return r
+        return False
